@@ -1,0 +1,27 @@
+language: python
+
+python:
+   - 3.6
+
+branches:
+   only:
+       - master
+
+install:
+   - pip install coverage
+   - pip install coveralls
+   - pip install flake8
+   - pip install nose
+   - pip install -r requirements.txt
+
+# for production, remove the --exit-zero
+# this side-steps failing build on PEP8 violations
+before_script:
+   - flake8 impedance --exclude=*.ipynb_checkpoints
+
+script:
+   - nosetests --with-coverage --cover-erase --cover-package=impedance
+
+after_success:
+   - coverage report
+   - coveralls

@@ -1,3 +1,15 @@
+# any julia files
+*.jl
+
+# any cython files or binaries
+*.c
+*.pyx
+*.pyc
+*.pyd
+*/build/*
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
