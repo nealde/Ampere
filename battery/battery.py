@@ -27,6 +27,8 @@ class BaseBattery:
         self.verbose = verbose
         self.initial = None
         self.conf_ = None
+        self.inplace = None
+
         # self.opt = opt_wrap
 
     def _is_fit(self):
@@ -39,7 +41,7 @@ class BaseBattery:
     def charge(self, t=None, current=0.5, from_current_state=False, p=None, trim=False):
         """The base wrapper for the model, used for simple charging. Automatically
         transitions from cc to cv depending upon final time.
-        
+
         Inputs              Description
         ------              ------------------------
         t                   A list or numpy array of times to sample at (optional)
@@ -50,7 +52,7 @@ class BaseBattery:
         p                   Defaults to none - present only for wrapping in an optimizer
         trim                Defaults to False, a value of true will remove the padded numbers
                                 at the end, where False will allow padded values.
-                                
+
         Output              Description
         ------              ------------------------
         out                 A list of values for [time, voltage, current] of the simulation"""
@@ -81,7 +83,7 @@ class BaseBattery:
 
     def discharge(self, t=None, current=0.5, from_current_state=False, p=None, trim=False):
         """The base wrapper for the model, used for simple discharging.
-        
+
         Inputs              Description
         ------              ------------------------
         t                   A list or numpy array of times to sample at (optional)
@@ -92,7 +94,7 @@ class BaseBattery:
         p                   Defaults to none - present only for wrapping in an optimizer
         trim                Defaults to False, a value of true will remove the padded numbers
                                 at the end, where False will allow padded values.
-                                
+
         Output              Description
         ------              ------------------------
         out                 A list of values for [time, voltage, current] of the simulation"""
@@ -126,7 +128,7 @@ class BaseBattery:
         by a change. When charge_first is set to False, it will start from a charged
         state and discharge, follower by a charge.  Otherwise, it will do them
         in reverse order.
-        
+
         Inputs              Description
         ------              ------------------------
         current             A value for charge and discharge current. These must be the same.
@@ -137,7 +139,7 @@ class BaseBattery:
         p                   Defaults to none - present only for wrapping in an optimizer
         trim                Defaults to False, a value of true will remove the padded numbers
                                 at the end, where False will allow padded values.
-                                
+
         Output              Description
         ------              ------------------------
         out                 A list of values for [time, voltage, current] of the simulation"""
@@ -573,6 +575,7 @@ class SingleParticle(BaseBattery):
         self.opt = self.opt_wrap
         self.verbose = verbose
         self.initial_fit = 0
+        # self.inplace = np.zeros((10000,8))
         self.available_parameters = ['Dn','Dp','Rn','Rp','T','an','ap','ce','csnmax','cspmax','kn','kp','ln','lp']
         self.default_values = [3.9e-14, 1e-14, 2e-6, 2e-6, 303.15, 723600, 885000, 1000, 30550, 51555, 5.0307e-9, 2.334e-9, 88e-6, 80e-6]
         self.initial_parameters = dict(zip(self.available_parameters, self.default_values))

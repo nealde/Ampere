@@ -55,6 +55,7 @@ def SPM_par(p, t, initial=None):
     parameters are the initial conditions, if initial = 0.'''
     from .models.SPM.solve import spm_par_ida
     data = spm_par_ida(p, initial=initial, tf=t[-1])
+    # print(data[0][-5:])
     # print(data)
     # print(data[1][5]-data[1][6])
     if data[0][-1, 0] < t[-1] and np.isclose(data[0][-1, 1], 4.2, rtol=1e-2):
