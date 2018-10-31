@@ -22,8 +22,11 @@ def spm_fd_sei(p, initial=None, tf=0):
         input1 = np.concatenate([p,[1],[tf]])
     else:
         input1 = np.concatenate([p,[0],[tf], initial])
+    # print(list(input1))
     var = np.zeros((10000,int(p[18]+p[19]+15)))
     model(input1, var)
+    from time import sleep
+    sleep(0.05)
     count = np.nonzero(var[:,-2])[0][-1]+1
     var = var[:count]
     final = var[-1]

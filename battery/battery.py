@@ -226,21 +226,27 @@ class BaseBattery:
         # print(self.estimate_inds)
         x[self.estimate_inds] = x0
         error = 0
-        if currents_type == 'constant':
-            for t, v, c in zip(self.t_exp, self.v_exp, self.currents):
-                if c > 0:
-                    self.current_state = self.discharge_ICs
-                    solve = self.discharge(t, current=c, from_current_state=True, p=x)
-                    error += rmse(solve[1], v)
-                else:
-                    self.current_state = self.charge_ICs
-                    solve = self.charge(t, current=-c, from_current_state=True, p=x)
-                    error += rmse(solve[1], v)
-        else:
-            solve = self.piecewise_current(self.t_exp, self.currents, p=x)
-            error += rmse(solve[1], self.v_exp)
-        if verbose:
-            print(error, x0)
+        print(self.count)
+        self.count+=1
+        try:
+            if currents_type == 'constant':
+                for t, v, c in zip(self.t_exp, self.v_exp, self.currents):
+                    if c > 0:
+                        self.current_state = self.discharge_ICs
+                        solve = self.discharge(t, current=c, from_current_state=True, p=x)
+                        error += rmse(solve[1], v)
+                    else:
+                        self.current_state = self.charge_ICs
+                        solve = self.charge(t, current=-c, from_current_state=True, p=x)
+                        error += rmse(solve[1], v)
+            else:
+                solve = self.piecewise_current(self.t_exp, self.currents, p=x)
+                error += rmse(solve[1], self.v_exp)
+            if verbose:
+                print(error, x0)
+        except:
+            error = 100
+            print('failed')
         return error
 
     def fit(self, t_exp, v_exp, currents, currents_type='constant', method="Nelder-Mead", bounds=None, re=0, maxiter=100, tol=None, **kwargs):
@@ -281,6 +287,7 @@ class BaseBattery:
         self.currents_type = currents_type
         self.tol = tol
         self.maxiter = maxiter
+        self.count = 0
 
         if re == 0:
             self.t_exp = t_exp
@@ -701,9 +708,9 @@ class SingleParticleFDSEI(BaseBattery):
         # self.charge_ICs = [4.95030611e+04, 3.05605527e+02, 4.93273985e+04, 3.55685791e+02, 3.78436346e+00, 7.86330739e-01, 1.00000000e+00]
         self.discharge_ICs=[]
         for i in range(N1+2):
-            self.charge_ICs.append(2.51417672e+04)
+            self.discharge_ICs.append(2.51417672e+04)
         for i in range(N1+2, N1+N2+4):
-            self.charge_ICs.append(2.73921225)
+            self.discharge_ICs.append(2.73921225e+04)
         self.discharge_ICs.append(4.26700382e+00)
         self.discharge_ICs.append(6.70038247e-02)
         self.discharge_ICs.append(2.65295200e-03)
@@ -716,8 +723,6 @@ class SingleParticleFDSEI(BaseBattery):
         self.discharge_ICs.append(1.00000000e-02)
         # self.discharge_ICs = [2.51584754e+04, 2.73734963e+04, 2.51409091e+04, 2.73785043e+04, 4.26705391e+00, 6.70539113e-02, -1.00000000]
         self.hist = []
-
-
 
 
 
