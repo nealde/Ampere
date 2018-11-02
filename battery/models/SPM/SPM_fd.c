@@ -484,7 +484,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <stdlib.h>
 #include "numpy/arrayobject.h"
 #include "numpy/ufuncobject.h"
-#include "SPM_fd_source.c"
+#include "SPM_fd.source"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */

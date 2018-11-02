@@ -3,8 +3,9 @@
 
 # any cython files or binaries
 .c
-.pyx
-*.o # files made by building
+
+# files made by building
+*.o 
 *.pyc
 *.pyd
 */build/*

@@ -4,7 +4,7 @@ import cython
 import numpy as np
 cimport numpy as np
 
-cdef extern from "SPM_par_source.c":
+cdef extern from "SPM_par.source":
     int main(double* input, double* output, int n)
 
 def model(np.ndarray[double, ndim=1, mode="c"] input not None, np.ndarray[double, ndim=2, mode="c"] output not None):
