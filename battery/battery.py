@@ -725,7 +725,103 @@ class SingleParticleFDSEI(BaseBattery):
         self.hist = []
 
 
+class SingleParticleFD(BaseBattery):
+    """An Finite Difference implementation of the Single Particle Model with SEI, solved with IDA.  This
+    version supports CC-discharge, CC-CV charging, and access to the internal
+    states of the battery.  It also allows for sequential cycling. See .charge, .discharge,
+    .cycle, and .piecewise_current for more."""
+    def __init__(self, initial_parameters=None, verbose=False, **kwargs):
+        """Constructor for the Single Particle Model base class
+        Parameters
+        ----------
+        initial_parameters: A dictionary of parameter names and values. Acceptable names for the
+        parameters can be found below:
+        | name      | description                                   | default value | Units            |
+        |-----------|-----------------------------------------------|---------------|------------------|
+        | Dp        | Li+ Diffusivity in positive particle          | 3.9e-14       | cm^2/s           |
+        | Dn        | Li+ Diffusivity in negative particle          | 3.9e-14       | cm^2/s           |
+        | cspmax    | Maximum Li concentration of positive solid    | 30555         | mol/m^3          |
+        | csnmax    | Maximum Li concentration of negative solid    | 30555         | mol/m^3          |
+        | lp        | Positive electrode thickness                  | 80e-6         | m                |
+        | ln        | Negative electrode thickness                  | 88e-6         | m                |
+        | Rp        | Positive particle radius                      | 2e-6          | m                |
+        | Rn        | Negative particle radius                      | 2e-6          | m                |
+        | T         | Ambient Temperature                           | 303.15        | K                |
+        | ce        | Starting electrolyte Li+ concentration        | 1000          | mol/m^3          |
+        | ap        | Surface area of positive electrode per volume | 885000        | m^2/m^3          |
+        | an        | Surface area of negative electrode per volume | 723600        | m^2/m^3          |
+        | kp        | Positive electrode reaction rate              | 2.334e-9      | m^2.5/(mol^0.5s) |
+        | kn        | Negative electrode reaction rate              | 5.0307e-9     | m^2.5/(mol^0.5s) |
+        | N1        | Number of FD nodes in positive particle       | 15            |                  |
+        | N2        | Number of FD nodes in negative particle       | 15            |                  |
 
+        estimate_parameters: A list of strings representing the parameters that you wish to estimate.
+        Defaults to None, which will allow for the estimation of all parameters except temperature.
+
+        For both intiial_parameters and estimate_parameters, order does not matter.
+
+        Example usage:
+        spm = SingleParticle(initial_parameters=dictionary_of_parameter_label_value_pairs, est_pars=list_of_parameter_labels)
+
+        A list of available keyword agruments (kwargs):
+
+
+
+        """
+        from .numerical import SPM_fd
+        from .fitting import rmse
+        super().__init__(initial_parameters, **kwargs)
+        self.model = SPM_fd
+        self.opt = self.opt_wrap
+        self.verbose = verbose
+        self.initial_fit = 0
+        TC = 30
+        # self.inplace = np.zeros((10000,8))
+        self.available_parameters = ['Dp','Dn','cspmax','csnmax','lp','ln','Rp','Rn','T','ce','ap','an','kp','kn','N1','N2']
+        self.default_values = [1e-14, 1e-14, 51555.0, 30555.0, 8e-05, 8.8e-05, 2e-06, 2e-06, 303.15, 1000.0, 885000.0, 723600.0, 2.334e-11, 8.307e-12, 30, 30]
+        self.initial_parameters = dict(zip(self.available_parameters, self.default_values))
+        if initial_parameters is not None:
+            for key in initial_parameters.keys():
+                assert set({key}).issubset(self.initial_parameters.keys()),\
+                        "Invalid initial key entered - double check %s" % str(key)
+            for key in initial_parameters.keys():
+                self.initial_parameters[key] = initial_parameters[key]
+        # initial enforces the order parameters are given to the model
+        self.initial = np.array([self.initial_parameters[i] for i in self.available_parameters])
+        if self.estimate_parameters is not None:
+            for key in self.estimate_parameters:
+                assert set({key}).issubset(self.initial_parameters.keys()),\
+                        "Invalid estimate key entered - double check %s" % str(key)
+            self.estimate_inds = [i for i, p in enumerate(self.available_parameters) if p in self.estimate_parameters]
+            if self.verbose:
+                print(self.estimate_parameters, self.estimate_inds)
+        else:
+            self.estimate_inds = list(range(len(self.initial)))
+            if self.verbose:
+                print(self.estimate_parameters, self.estimate_inds)
+        self.charge_ICs = []
+        N1 = int(self.initial[14])
+        N2 = int(self.initial[15])
+        for i in range(N1+2):
+            self.charge_ICs.append(49503.111)
+        for i in range(N1+2, N1+N2+4):
+            self.charge_ICs.append(305.55)
+        self.charge_ICs.append(3.67873289259766)    #phi_p
+        self.charge_ICs.append(.182763748093840)    #phi_n
+        self.charge_ICs.append(3.0596914450382)   #pot
+        self.charge_ICs.append(TC*1)   	  	  #it
+        # self.charge_ICs = [4.95030611e+04, 3.05605527e+02, 4.93273985e+04, 3.55685791e+02, 3.78436346e+00, 7.86330739e-01, 1.00000000e+00]
+        self.discharge_ICs=[]
+        for i in range(N1+2):
+            self.discharge_ICs.append(25817.37)
+        for i in range(N1+2, N1+N2+4):
+            self.discharge_ICs.append(26885.03)
+        self.discharge_ICs.append(4.246347)
+        self.discharge_ICs.append(0.046347)
+        self.discharge_ICs.append(4.20000000e+00)
+        self.discharge_ICs.append(1.00000000e-02)
+        # self.discharge_ICs = [2.51584754e+04, 2.73734963e+04, 2.51409091e+04, 2.73785043e+04, 4.26705391e+00, 6.70539113e-02, -1.00000000]
+        self.hist = []
 
 
 

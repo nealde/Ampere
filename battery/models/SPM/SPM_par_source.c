@@ -113,8 +113,8 @@ int main(double* input, double* output, int n)
 
 // Integration limits
     t0 = 0.000000;
-    dt = 2.0;
- tout1 = 2.0;
+    dt = 10.0;
+   tout1 = 10.0;
   double tfinal = dt*NOUT;
   if (p[17] > 0){
       tfinal = p[17]+200.0;

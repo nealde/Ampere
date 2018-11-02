@@ -23,4 +23,4 @@ t_exp = data[0]
 v_exp = data[1]
 curr_exp = data[2]
 
-spm2.fit([t_exp], [v_exp], currents=[-0.5], maxiter=100, tol=1e-7)
+spm2.fit([t_exp], [v_exp], currents=[0.5], method="Nelder-Mead", maxiter=100, tol=1e-7)

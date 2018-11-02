@@ -115,6 +115,41 @@ def SPM_fd_sei(p, t, initial=None):
     return [np.concatenate(([t], [voltage(t)], [current(t)]), axis=0), final_values]
 
 
+def SPM_fd(p, t, initial=None):
+    '''This function wraps the SPM exe which allows for continuous battery operation.
+    It handles switching between CC/CV if needed. This is determined by the time steps
+    and the current.
+    For the parameters passed to the exe, p[:14] are model parameters, p[14] is current,
+    and p[15] is whether to be in CC or CV mode.
+    p[16] is whether or not the model will inherit initial conditions, and the next 7 expected
+    parameters are the initial conditions, if initial = 0.'''
+    from .models.SPM.solve import spm_fd
+    # print(p)
+    data = spm_fd(p, initial=initial, tf=t[-1])
+
+    if data[0][-1, 0] < t[-1] and np.isclose(data[0][-1, 1], 4.2, rtol=1e-2):
+        # print('true')
+        pp = np.copy(p)
+        pp[17] = 0 # cc is p[17] now
+        data2 = spm_fd(pp, initial=data[1][1:]) # leave off time
+        # print(data2)
+        data2[0][:,0] += data[0][-1,0]
+        data[0] = np.concatenate((data[0][:-1,:], data2[0]), axis=0)
+        # print(data[0])
+        data[1] = data2[1]
+
+    # returns a list with [][array_of_data] and [final values]]
+    # print(data)
+    if p[16] > 0: # if current is positive - current is now index 16
+        voltage = interp1d(data[0][:,0], data[0][:,1], kind='cubic', bounds_error=False, fill_value=4.2)
+        current = interp1d(data[0][:,0], data[0][:,2], kind='cubic', bounds_error=False, fill_value=0)
+    else:
+        voltage = interp1d(data[0][:,0], data[0][:,1], kind='cubic', bounds_error=False, fill_value=2.5)
+        current = interp1d(data[0][:,0], data[0][:,2], kind='cubic', bounds_error=False, fill_value=0)
+    final_values = data[1]
+    return [np.concatenate(([t], [voltage(t)], [current(t)]), axis=0), final_values]
+
+
 # def str_to_array(a):
 #     """
 #     parses a string and returns the result of a julia solution in [time, voltage]
