@@ -16,7 +16,7 @@ def spm_par(p, initial=None, tf=0):
     out[:,1] -= var[:,6]
     return [out, final]
 
-def spm_fd_sei(p, initial=None, tf=0):
+def spm_fd_sei(p, initial=None, tf=0, internal=False):
     from .SPM_fd_sei import model
     if initial is None:
         input1 = np.concatenate([p,[1],[tf]])
@@ -32,9 +32,12 @@ def spm_fd_sei(p, initial=None, tf=0):
     out = var[:,[0,-2,-1]]
     out[:,-1] /= 30.
     # out[:,1] -= var[:,6]
-    return [out, final]
+    if not internal:
+        return [out, final]
+    else:
+        return [out, final, var]
 
-def spm_fd(p, initial=None, tf=0):
+def spm_fd(p, initial=None, tf=0, internal=False):
     from .SPM_fd import model
     if initial is None:
         input1 = np.concatenate([p,[1],[tf]])
@@ -50,4 +53,7 @@ def spm_fd(p, initial=None, tf=0):
     out = var[:,[0,-2,-1]]
     out[:,-1] /= 30.
     # out[:,1] -= var[:,6]
-    return [out, final]
+    if not internal:
+        return [out, final]
+    else:
+        return [out, final, var]

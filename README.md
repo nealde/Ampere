@@ -9,10 +9,10 @@
 -->
 
 
-battery.py
+battery
 ------------
 
-`battery.py` is a Python module for working with battery models.
+`battery` is a Python module for working with battery models.
 
 Using a [scikit-learn-like API](https://arxiv.org/abs/1309.0238), we hope to make visualizing, fitting, and analyzing impedance spectra more intuitive and reproducible.
 
@@ -39,8 +39,8 @@ battery.py requires:
 - SciPy (>=1.0)
 - NumPy (>=1.14)
 - Matplotlib (>=2.0)
-- Julia (>=0.6)
-    - DifferentialEquations.jl (>)
+- Cython
+
 
 Several example notebooks are provided in the examples/ directory. Opening these will require Jupyter notebook or Jupyter lab.
 

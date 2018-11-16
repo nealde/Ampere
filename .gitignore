@@ -1,11 +1,13 @@
 # any julia files
 *.jl
+test_nb.*
 
 # any cython files or binaries
 .c
 
 # files made by building
 *.o 
+*.obj
 *.pyc
 *.pyd
 */build/*
