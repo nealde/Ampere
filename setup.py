@@ -4,19 +4,19 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="battery",
-    version="0.1.1-alpha",
-    author="battery.py developers",
+    name="ampere",
+    version="0.2",
+    author="Neal Dawson-Elli",
     author_email="nealde@uw.edu",
-    description="A Python package for working with impedance data",
+    description="A Python package for working with battery discharge data",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://impedancepy.readthedocs.io/en/latest/",
+    url="https://github.com/nealde/Ampere",
     packages=setuptools.find_packages(),
-    install_requires=['matplotlib>=2.0', 'numpy>=1.14', 'scipy>=1.0'],
+    install_requires=['matplotlib', 'numpy', 'scipy'],
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        "Operating System :: OS Independent"
     ),
 )

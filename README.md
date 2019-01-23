@@ -9,15 +9,15 @@
 -->
 
 
-battery
+Ampere - Advanced Model Package for ElectRochemical Experiments
 ------------
 
-`battery` is a Python module for working with battery models.
+`Ampere` is a Python module for working with battery models.
 
 Using a [scikit-learn-like API](https://arxiv.org/abs/1309.0238), we hope to make visualizing, fitting, and analyzing impedance spectra more intuitive and reproducible.
 
-<i>impedance.py is currently in the alpha phase and new features are rapidly being added.</i>
-If you have a feature request or find a bug, please feel free to [file an issue](https://github.com/ECSHackWeek/impedance.py/issues) or, better yet, make the code improvements and [submit a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)! The goal is to build an open-source tool that the entire impedance community can improve and use!
+<i>Ampere is currently in the alpha phase and new features are rapidly being added.</i>
+If you have a feature request or find a bug, please feel free to [file an issue](https://github.com/nealde/Ampere/issues) or, better yet, make the code improvements and [submit a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)! The goal is to build an open-source tool that the entire electrochemical community can improve and use!
 
 impedance.py currently provides:
 - a simple API for fitting, predicting, and plotting impedance
@@ -46,9 +46,9 @@ Several example notebooks are provided in the examples/ directory. Opening these
 
 #### User Installation
 
-The easiest way to install battery.py is using pip:
+The easiest way to install Ampere is using pip:
 
-`pip install battery`
+`pip install ampere`
 
 #### Examples and Documentation
 
