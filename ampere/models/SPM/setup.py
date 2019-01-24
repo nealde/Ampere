@@ -1,6 +1,16 @@
 from distutils.core import setup, Extension
 from Cython.Distutils import build_ext
 import numpy
+import os
+
+# delete old files
+try:
+    os.remove("SPM_par.c")
+    os.remove("SPM_fd_sei.c")
+    os.remove("SPM_fd.c")
+except FileNotFoundError:
+    pass
+
 ida_dir = "../../../ida/"
 setup(
     cmdclass={'build_ext': build_ext},

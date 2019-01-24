@@ -100,6 +100,8 @@ double R = 8.3143;
 double TC = 30.0;
 // define parameter vector
 double p[5000];
+double csp[1500];
+double csn[1500];
 
 int main(double* input, double* output, int n)
 {
@@ -415,8 +417,10 @@ int resrob(realtype tres, N_Vector yy, N_Vector yp, N_Vector rr, void *user_data
     // double endvolt1 = p[22];
     // double cc = p[23];
 
-    double csp[N1+2];
-    double csn[N2+2];
+    //    double csp[N1+2];
+    //    double csn[N2+2];
+    //double csp[150];
+    //double csn[150];
 
     // csp = np.zeros(N1+2)
     for (i=0; i<N1+2; i++){

@@ -605,14 +605,14 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__SPM_par
-#define __PYX_HAVE_API__SPM_par
+#define __PYX_HAVE__SPM_fd
+#define __PYX_HAVE_API__SPM_fd
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
 #include "numpy/arrayobject.h"
 #include "numpy/ufuncobject.h"
-#include "SPM_par.source"
+#include "SPM_fd.source"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -842,7 +842,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "SPM_par.pyx",
+  "SPM_fd.pyx",
   "__init__.pxd",
   "type.pxd",
 };
@@ -1618,13 +1618,13 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
-/* Module declarations from 'SPM_par' */
+/* Module declarations from 'SPM_fd' */
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "SPM_par"
-extern int __pyx_module_is_main_SPM_par;
-int __pyx_module_is_main_SPM_par = 0;
+#define __Pyx_MODULE_NAME "SPM_fd"
+extern int __pyx_module_is_main_SPM_fd;
+int __pyx_module_is_main_SPM_fd = 0;
 
-/* Implementation of 'SPM_par' */
+/* Implementation of 'SPM_fd' */
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
@@ -1638,13 +1638,13 @@ static const char __pyx_k_input[] = "input";
 static const char __pyx_k_model[] = "model";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
+static const char __pyx_k_SPM_fd[] = "SPM_fd";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_output[] = "output";
-static const char __pyx_k_SPM_par[] = "SPM_par";
 static const char __pyx_k_success[] = "success";
+static const char __pyx_k_SPM_fd_pyx[] = "SPM_fd.pyx";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_ImportError[] = "ImportError";
-static const char __pyx_k_SPM_par_pyx[] = "SPM_par.pyx";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
@@ -1660,8 +1660,8 @@ static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
 static PyObject *__pyx_n_s_ImportError;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
-static PyObject *__pyx_n_s_SPM_par;
-static PyObject *__pyx_kp_s_SPM_par_pyx;
+static PyObject *__pyx_n_s_SPM_fd;
+static PyObject *__pyx_kp_s_SPM_fd_pyx;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_import;
@@ -1681,7 +1681,7 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_success;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
-static PyObject *__pyx_pf_7SPM_par_model(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_input, PyArrayObject *__pyx_v_output); /* proto */
+static PyObject *__pyx_pf_6SPM_fd_model(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_input, PyArrayObject *__pyx_v_output); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tuple_;
@@ -1695,7 +1695,7 @@ static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_codeobj__9;
 /* Late includes */
 
-/* "SPM_par.pyx":10
+/* "SPM_fd.pyx":11
  *     int main(double* input, double* output, int n)
  * 
  * def model(np.ndarray[double, ndim=1, mode="c"] input not None, np.ndarray[double, ndim=2, mode="c"] output not None):             # <<<<<<<<<<<<<<
@@ -1704,9 +1704,9 @@ static PyObject *__pyx_codeobj__9;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7SPM_par_1model(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_7SPM_par_1model = {"model", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_7SPM_par_1model, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7SPM_par_1model(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6SPM_fd_1model(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6SPM_fd_1model = {"model", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6SPM_fd_1model, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6SPM_fd_1model(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_input = 0;
   PyArrayObject *__pyx_v_output = 0;
   PyObject *__pyx_r = 0;
@@ -1735,11 +1735,11 @@ static PyObject *__pyx_pw_7SPM_par_1model(PyObject *__pyx_self, PyObject *__pyx_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("model", 1, 2, 2, 1); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("model", 1, 2, 2, 1); __PYX_ERR(0, 11, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "model") < 0)) __PYX_ERR(0, 10, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "model") < 0)) __PYX_ERR(0, 11, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1752,15 +1752,15 @@ static PyObject *__pyx_pw_7SPM_par_1model(PyObject *__pyx_self, PyObject *__pyx_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("model", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 10, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("model", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("SPM_par.model", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("SPM_fd.model", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_input), __pyx_ptype_5numpy_ndarray, 0, "input", 0))) __PYX_ERR(0, 10, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output), __pyx_ptype_5numpy_ndarray, 0, "output", 0))) __PYX_ERR(0, 10, __pyx_L1_error)
-  __pyx_r = __pyx_pf_7SPM_par_model(__pyx_self, __pyx_v_input, __pyx_v_output);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_input), __pyx_ptype_5numpy_ndarray, 0, "input", 0))) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output), __pyx_ptype_5numpy_ndarray, 0, "output", 0))) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6SPM_fd_model(__pyx_self, __pyx_v_input, __pyx_v_output);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1771,7 +1771,7 @@ static PyObject *__pyx_pw_7SPM_par_1model(PyObject *__pyx_self, PyObject *__pyx_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7SPM_par_model(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_input, PyArrayObject *__pyx_v_output) {
+static PyObject *__pyx_pf_6SPM_fd_model(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_input, PyArrayObject *__pyx_v_output) {
   int __pyx_v_n;
   int __pyx_v_success;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_input;
@@ -1796,16 +1796,16 @@ static PyObject *__pyx_pf_7SPM_par_model(CYTHON_UNUSED PyObject *__pyx_self, PyA
   __pyx_pybuffernd_output.rcbuffer = &__pyx_pybuffer_output;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_input.rcbuffer->pybuffer, (PyObject*)__pyx_v_input, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 10, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_input.rcbuffer->pybuffer, (PyObject*)__pyx_v_input, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 11, __pyx_L1_error)
   }
   __pyx_pybuffernd_input.diminfo[0].strides = __pyx_pybuffernd_input.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_input.diminfo[0].shape = __pyx_pybuffernd_input.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_output.rcbuffer->pybuffer, (PyObject*)__pyx_v_output, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 10, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_output.rcbuffer->pybuffer, (PyObject*)__pyx_v_output, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 11, __pyx_L1_error)
   }
   __pyx_pybuffernd_output.diminfo[0].strides = __pyx_pybuffernd_output.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_output.diminfo[0].shape = __pyx_pybuffernd_output.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_output.diminfo[1].strides = __pyx_pybuffernd_output.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_output.diminfo[1].shape = __pyx_pybuffernd_output.rcbuffer->pybuffer.shape[1];
 
-  /* "SPM_par.pyx":13
+  /* "SPM_fd.pyx":14
  *     cdef int n
  * 
  *     n = input.shape[0]             # <<<<<<<<<<<<<<
@@ -1814,7 +1814,7 @@ static PyObject *__pyx_pf_7SPM_par_model(CYTHON_UNUSED PyObject *__pyx_self, PyA
  */
   __pyx_v_n = (__pyx_v_input->dimensions[0]);
 
-  /* "SPM_par.pyx":15
+  /* "SPM_fd.pyx":16
  *     n = input.shape[0]
  * 
  *     success = main(&input[0], &output[0,0], n)             # <<<<<<<<<<<<<<
@@ -1829,7 +1829,7 @@ static PyObject *__pyx_pf_7SPM_par_model(CYTHON_UNUSED PyObject *__pyx_self, PyA
   } else if (unlikely(__pyx_t_1 >= __pyx_pybuffernd_input.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 15, __pyx_L1_error)
+    __PYX_ERR(0, 16, __pyx_L1_error)
   }
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
@@ -1844,23 +1844,23 @@ static PyObject *__pyx_pf_7SPM_par_model(CYTHON_UNUSED PyObject *__pyx_self, PyA
   } else if (unlikely(__pyx_t_4 >= __pyx_pybuffernd_output.diminfo[1].shape)) __pyx_t_2 = 1;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 15, __pyx_L1_error)
+    __PYX_ERR(0, 16, __pyx_L1_error)
   }
   __pyx_v_success = main((&(*__Pyx_BufPtrCContig1d(double *, __pyx_pybuffernd_input.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_input.diminfo[0].strides))), (&(*__Pyx_BufPtrCContig2d(double *, __pyx_pybuffernd_output.rcbuffer->pybuffer.buf, __pyx_t_3, __pyx_pybuffernd_output.diminfo[0].strides, __pyx_t_4, __pyx_pybuffernd_output.diminfo[1].strides))), __pyx_v_n);
 
-  /* "SPM_par.pyx":17
+  /* "SPM_fd.pyx":18
  *     success = main(&input[0], &output[0,0], n)
  * 
  *     return success             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_success); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_success); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "SPM_par.pyx":10
+  /* "SPM_fd.pyx":11
  *     int main(double* input, double* output, int n)
  * 
  * def model(np.ndarray[double, ndim=1, mode="c"] input not None, np.ndarray[double, ndim=2, mode="c"] output not None):             # <<<<<<<<<<<<<<
@@ -1878,7 +1878,7 @@ static PyObject *__pyx_pf_7SPM_par_model(CYTHON_UNUSED PyObject *__pyx_self, PyA
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_input.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_output.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("SPM_par.model", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("SPM_fd.model", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4315,17 +4315,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_SPM_par(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_SPM_fd(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_SPM_par},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_SPM_fd},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "SPM_par",
+    "SPM_fd",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -4359,8 +4359,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
-  {&__pyx_n_s_SPM_par, __pyx_k_SPM_par, sizeof(__pyx_k_SPM_par), 0, 0, 1, 1},
-  {&__pyx_kp_s_SPM_par_pyx, __pyx_k_SPM_par_pyx, sizeof(__pyx_k_SPM_par_pyx), 0, 0, 1, 0},
+  {&__pyx_n_s_SPM_fd, __pyx_k_SPM_fd, sizeof(__pyx_k_SPM_fd), 0, 0, 1, 1},
+  {&__pyx_kp_s_SPM_fd_pyx, __pyx_k_SPM_fd_pyx, sizeof(__pyx_k_SPM_fd_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -4473,17 +4473,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "SPM_par.pyx":10
+  /* "SPM_fd.pyx":11
  *     int main(double* input, double* output, int n)
  * 
  * def model(np.ndarray[double, ndim=1, mode="c"] input not None, np.ndarray[double, ndim=2, mode="c"] output not None):             # <<<<<<<<<<<<<<
  *     cdef int n
  * 
  */
-  __pyx_tuple__8 = PyTuple_Pack(4, __pyx_n_s_input, __pyx_n_s_output, __pyx_n_s_n, __pyx_n_s_success); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(4, __pyx_n_s_input, __pyx_n_s_output, __pyx_n_s_n, __pyx_n_s_success); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_SPM_par_pyx, __pyx_n_s_model, 10, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_SPM_fd_pyx, __pyx_n_s_model, 11, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -4608,11 +4608,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initSPM_par(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initSPM_par(void)
+__Pyx_PyMODINIT_FUNC initSPM_fd(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initSPM_fd(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_SPM_par(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_SPM_par(void)
+__Pyx_PyMODINIT_FUNC PyInit_SPM_fd(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_SPM_fd(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -4679,7 +4679,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_SPM_par(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_SPM_fd(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -4688,7 +4688,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_SPM_par(PyObject *__pyx_pyinit_mod
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'SPM_par' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'SPM_fd' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -4703,7 +4703,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_SPM_par(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_SPM_fd(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -4742,7 +4742,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("SPM_par", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("SPM_fd", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -4761,14 +4761,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_SPM_par) {
+  if (__pyx_module_is_main_SPM_fd) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "SPM_par")) {
-      if (unlikely(PyDict_SetItemString(modules, "SPM_par", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "SPM_fd")) {
+      if (unlikely(PyDict_SetItemString(modules, "SPM_fd", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -4789,7 +4789,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "SPM_par.pyx":4
+  /* "SPM_fd.pyx":4
  * 
  * # import both numpy and the Cython declarations for numpy
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -4801,19 +4801,19 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "SPM_par.pyx":10
+  /* "SPM_fd.pyx":11
  *     int main(double* input, double* output, int n)
  * 
  * def model(np.ndarray[double, ndim=1, mode="c"] input not None, np.ndarray[double, ndim=2, mode="c"] output not None):             # <<<<<<<<<<<<<<
  *     cdef int n
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7SPM_par_1model, NULL, __pyx_n_s_SPM_par); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6SPM_fd_1model, NULL, __pyx_n_s_SPM_fd); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_model, __pyx_t_1) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_model, __pyx_t_1) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "SPM_par.pyx":1
+  /* "SPM_fd.pyx":1
  * import cython             # <<<<<<<<<<<<<<
  * 
  * # import both numpy and the Cython declarations for numpy
@@ -4838,11 +4838,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init SPM_par", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init SPM_fd", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init SPM_par");
+    PyErr_SetString(PyExc_ImportError, "init SPM_fd");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

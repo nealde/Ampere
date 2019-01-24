@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ampere",
-    version="0.2",
+    version="0.2.3",
     author="Neal Dawson-Elli",
     author_email="nealde@uw.edu",
     description="A Python package for working with battery discharge data",

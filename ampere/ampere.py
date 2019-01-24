@@ -68,30 +68,30 @@ class BaseBattery:
             solve = self.model([*p, current, 1], t, initial=self.current_state, internal=internal)
             self.current_state = solve[1][1:]
             self.hist.append(solve[0])
-            if not internal:
-                if not trim:
-                    return solve[0]
-                else:
-                    return solve[0][:,solve[0][2]<-0.01]
-            else:
-                if not trim:
-                    return [solve[0], solve[-1]]
-                else:
+            if internal:
+                if trim:
                     return [solve[0][:,solve[0][2]<-0.01], solve[-1]]
+                else:
+                    return [solve[0], solve[-1]]
+            else:
+                if trim:
+                    return solve[0][:,solve[2]<-0.01]
+                else:
+                    return solve[0]
         else:
             solve = self.model([*p, current, 1], t, initial=self.charge_ICs, internal=internal)
             self.current_state = solve[1][1:]
             self.hist.append(solve[0])
-            if not internal:
-                if not trim:
-                    return solve[0]
-                else:
-                    return solve[0][:,solve[0][2]<-0.01]
-            else:
-                if not trim:
-                    return [solve[0], solve[-1]]
-                else:
+            if internal:
+                if trim:
                     return [solve[0][:,solve[0][2]<-0.01], solve[-1]]
+                else:
+                    return [solve[0], solve[-1]]
+            else:
+                if trim:
+                    return solve[0][:,solve[2]<-0.01]
+                else:
+                    return solve[0]
 
     def discharge(self, t=None, current=0.5, from_current_state=False, p=None, trim=False, internal=False):
         """The base wrapper for the model, used for simple discharging.
@@ -122,30 +122,32 @@ class BaseBattery:
             solve = self.model([*p, current*-1, 1], t, initial=[*self.current_state[:-1], current*-1], internal=internal)
             self.current_state = solve[1][1:]
             self.hist.append(solve[0])
-            if not internal:
-                if not trim:
-                    return solve[0]
+            if internal:
+                if trim:
+                    return [solve[0][:,:np.where(solve[0][2]==0)[0][0]+1], solve[-1]]
                 else:
-                    return solve[0][:,solve[0][2]<-0.01]
-            else:
-                if not trim:
                     return [solve[0], solve[-1]]
+            else:
+                if trim:
+                    return solve[0][:,:np.where(solve[0][2]==0)[0][0]+1]
                 else:
-                    return [solve[0][:,solve[0][2]<-0.01], solve[-1]]
+                    return solve[0]
         else:
             solve = self.model([*p, current*-1, 1], t, initial=self.discharge_ICs, internal=internal)
             self.current_state = solve[1][1:]
             self.hist.append(solve[0])
-            if not internal:
-                if not trim:
-                    return solve[0]
+            if internal:
+                if trim:
+                    return [solve[0][:,:np.where(solve[0][2]==0)[0][0]+1], solve[-1]]
                 else:
-                    return solve[0][:,solve[0][2]<-0.01]
-            else:
-                if not trim:
                     return [solve[0], solve[-1]]
+            else:
+                if trim:
+                    print(solve)
+                    return solve[0][:,:np.where(solve[0][2]==0)[0][0]+1]
+                    # return solve[0][:,solve[2]<-0.01]
                 else:
-                    return [solve[0][:,solve[0][2]<-0.01], solve[-1]]
+                    return solve[0]
 
     def cycle(self, current=0.5, n=500, charge_first=False, p=None, trim=False):
         """This function calls either a charge then discharge, or a discharge followed
