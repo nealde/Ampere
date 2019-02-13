@@ -30,6 +30,7 @@ P2D_fd.model(a, b)
 # print(b[:100,[0,-1]])
 # print((time.time()-st)/50)
 count = np.nonzero(b[1:,0])[0][-1]+1
+print(count)
 # # print(b[:,0])
 # print(count)
 print(list(b[0]))

@@ -92,7 +92,7 @@ double p[5000];
 double csp[1500];
 double csn[1500];
 
-int main(double* input, double* output, int n)
+int drive(double* input, double* output, int n)
 {
   void     *mem;
   N_Vector  yy, yp, avtol, id;

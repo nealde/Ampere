@@ -55,7 +55,7 @@ The next 8 parameters are the initial conditions (optional) [18:26]
 int cc = 1;
 double p[100];
 
-int main(double* input, double* output, int n)
+int drive(double* input, double* output, int n)
 {
   void     *mem;
   N_Vector  yy, yp, avtol, id;
