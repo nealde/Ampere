@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+// #include "ida/ida.h"
+// #include "ida/ida_dense.h"
+// #include "ida/nvector_serial.h"
+// #include "ida/sundials_math.h"
+// #include "ida/sundials_types.h"
 #include "../../../ida/ida.h"
 #include "../../../ida/ida_dense.h"
 #include "../../../ida/nvector_serial.h"

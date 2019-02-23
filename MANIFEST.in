@@ -1,0 +1,2 @@
+graft ./ida
+include ampere/models/P2D/*.c ampere/models/SPM/*.c

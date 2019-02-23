@@ -7,7 +7,6 @@ import os
 
 try:
     os.remove("P2D_fd.c")
-    os.remove("P2D*.so")
 except FileNotFoundError:
     pass
 

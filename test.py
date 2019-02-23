@@ -1,7 +1,7 @@
 import sys
 sys.settrace
 
-from battery import SingleParticleParabolic, SingleParticleFDSEI
+from ampere import SingleParticleParabolic, SingleParticleFDSEI
 import numpy as np
 
 spm1 = SingleParticleFDSEI()
