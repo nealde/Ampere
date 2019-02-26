@@ -170,7 +170,8 @@ def P2D_fd(p, t, initial=None, internal=False):
     parameters are the initial conditions, if initial = 0.'''
     from .models.P2D.solve import p2d_fd
     # print(p)
-    data = p2d_fd(p, initial=initial, tf=t[-1])
+    # print(t)
+    data = p2d_fd(p, initial=initial, tf=t[-1], internal=internal)
 
     cc_ind = 31
     curr_ind = 30
@@ -179,7 +180,7 @@ def P2D_fd(p, t, initial=None, internal=False):
         # print('true')
         pp = np.copy(p)
         pp[cc_ind] = 0 # cc is p[17] now
-        data2 = p2d_fd(pp, initial=data[1][1:]) # leave off time
+        data2 = p2d_fd(pp, initial=data[1][1:], internal=internal) # leave off time
         # print(data2)
         data2[0][:,0] += data[0][-1,0]
         data[0] = np.concatenate((data[0][:-1,:], data2[0]), axis=0)
@@ -189,6 +190,7 @@ def P2D_fd(p, t, initial=None, internal=False):
         data[1] = data2[1]
 
     # returns a list with [][array_of_data] and [final values]]
+    # print(data[0][:,0])
     # print(data[0][:,0].shape)
     if p[curr_ind] > 0: # if current is positive - current is now index 16
         voltage = interp1d(data[0][:,0], data[0][:,1], kind='cubic', bounds_error=False, fill_value=4.2)

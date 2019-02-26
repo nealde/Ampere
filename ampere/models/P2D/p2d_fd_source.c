@@ -125,7 +125,7 @@ int drive(double* input, double* output, int n)
   // Integration limits
     t0 = 0.000000;
     dt = 10.0;
-    tout1 = 2.0;
+    tout1 = 10.0;
     // tfinal is now
      double tfinal = dt*NOUT;
      if (p[33] > 0){

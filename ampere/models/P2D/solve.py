@@ -1,6 +1,6 @@
 import numpy as np
 
-def p2d_fd(p, initial=None, tf=0):
+def p2d_fd(p, initial=None, tf=0, internal=False):
     from .P2D_fd import model
     if initial is None:
         input1 = np.concatenate([p,[1],[tf]])
@@ -24,4 +24,7 @@ def p2d_fd(p, initial=None, tf=0):
     out = var[:,[0,-2,-1]]
     out[:,-1] /= 17.1
     # out[:,1] -= var[:,6]
-    return [out, final]
+    if not internal:
+        return [out, final]
+    else:
+        return [out, final, var]
