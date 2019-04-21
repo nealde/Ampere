@@ -19,27 +19,21 @@ Using a [scikit-learn-like API](https://arxiv.org/abs/1309.0238), we hope to mak
 <i>Ampere is currently in the alpha phase and new features are rapidly being added.</i>
 If you have a feature request or find a bug, please feel free to [file an issue](https://github.com/nealde/Ampere/issues) or, better yet, make the code improvements and [submit a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)! The goal is to build an open-source tool that the entire electrochemical community can improve and use!
 
-impedance.py currently provides:
-- a simple API for fitting, predicting, and plotting impedance
-- equivalent circuit fitting with customizable models
-- convenient Nyquist plots including confidence interval estimation for fit circuits
+Ampere currently provides:
+- a simple API for fitting, predicting, and plotting discharge curves
+- A simple API for generating data, or fitting with arbitrary charge / discharge patterns.
 
-several features are currently being improved upon:
-- implementation of measurement models as a data validation method
-- interactive plotting with altair
-- adding more impedance elements
-- physics-based impedance models for lithium-ion batteries
 
 ### Installation
 #### Dependencies
 
-battery.py requires:
+Ampere requires:
 
 - Python (>=3.5)
 - SciPy (>=1.0)
 - NumPy (>=1.14)
 - Matplotlib (>=2.0)
-- Cython
+- Cython (>=0.29)
 
 
 Several example notebooks are provided in the examples/ directory. Opening these will require Jupyter notebook or Jupyter lab.
