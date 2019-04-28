@@ -89,9 +89,9 @@ class BaseBattery:
                     return [solve[0], solve[-1]]
             else:
                 if trim:
-                    return solve[0][:,solve[2]<-0.01]
+                    return [solve[0][:,solve[2]<-0.01]]
                 else:
-                    return solve[0]
+                    return [solve[0]]
 
     def discharge(self, t=None, current=0.5, from_current_state=False, p=None, trim=False, internal=False):
         """The base wrapper for the model, used for simple discharging.
@@ -129,10 +129,11 @@ class BaseBattery:
                     return [solve[0], solve[-1]]
             else:
                 if trim:
-                    return solve[0][:,:np.where(solve[0][2]==0)[0][0]+1]
+                    return [solve[0][:,:np.where(solve[0][2]==0)[0][0]+1]]
                 else:
-                    return solve[0]
+                    return [solve[0]]
         else:
+            # print([*p, current*-1, 1], t[-1], self.discharge_ICs, internal)
             solve = self.model([*p, current*-1, 1], t, initial=self.discharge_ICs, internal=internal)
             self.current_state = solve[1][1:]
             self.hist.append(solve[0])
@@ -143,11 +144,10 @@ class BaseBattery:
                     return [solve[0], solve[-1]]
             else:
                 if trim:
-                    print(solve)
-                    return solve[0][:,:np.where(solve[0][2]==0)[0][0]+1]
+                    return [solve[0][:,:np.where(solve[0][2]==0)[0][0]+1]]
                     # return solve[0][:,solve[2]<-0.01]
                 else:
-                    return solve[0]
+                    return [solve[0]]
 
     def cycle(self, current=0.5, n=500, charge_first=False, p=None, trim=False):
         """This function calls either a charge then discharge, or a discharge followed
@@ -181,7 +181,7 @@ class BaseBattery:
             solve[-1][0] += solve[0][0,-1]
             return np.concatenate(solve, axis=1)
 
-    def piecewise_current(self, times, currents, n_steps=50, from_current_state=False, p=None):
+    def piecewise_current(self, times, currents, n_steps=50, from_current_state=False, p=None, internal=False):
         """This function wraps charge and discharge in order to chain them together to
         create the ability to simulate arbitrary piecewise currents. Only supports
         stair-style current stepping, ramps are not supported.
@@ -208,22 +208,36 @@ class BaseBattery:
             tt = np.linspace(0, t, n_steps)
             if c > 0:
                 try:
-                    out = self.discharge(tt, current=c, from_current_state=True, p=p)
+                    out = self.discharge(tt, current=c, from_current_state=True, p=p, internal=internal)
+                    # print(len(out))
                 except IndexError:
                     out = [tt, np.ones(len(tt))*2.5, np.ones(len(tt))*c]
             else:
                 try:
-                    out = self.charge(tt, current=c*-1, from_current_state=True, p=p)
+                    if internal:
+                        out = self.charge(tt, current=c*-1, from_current_state=True, p=p, internal=internal)
+                    else:  # need to nest one layer deeper for downstream code
+                        out = [self.charge(tt, current=c*-1, from_current_state=True, p=p, internal=internal)]
                 except IndexError:
                     out = np.array([tt, np.ones(len(tt))*4.2, np.ones(len(tt))*c])
-                    # print(solve[-1])
-                    # print(out)
-            if count > 0:
-                out[0] += solve[-1][0,-1]
-
-            solve.append(out)
+            # print(out)
+            # add times together
+            # if count > 0:
+            #     print(solve[-1])
+            #     out[0] += solve[-1][0,-1]
+            if internal:
+                solve.append(out[-1])
+            else:
+                # add times together
+                if count > 0:
+                    out[0][0] += solve[-1][0, -1]
+                solve.append(out[0])
             count += 1
-        solve = np.concatenate(solve, axis=1)
+        # print(solve)
+        if internal:
+            solve = np.concatenate(solve, axis=0)
+        else:
+            solve = np.concatenate(solve, axis=1)
         self.hist.append(solve)
         return solve
 
@@ -260,14 +274,15 @@ class BaseBattery:
                     if c > 0:
                         self.current_state = self.discharge_ICs
                         solve = self.discharge(t, current=c, from_current_state=True, p=x)
-                        error += rmse(solve[1], v)
+                        print(len(solve[0]))
+                        error += rmse(solve[0][1], v)
                     else:
                         self.current_state = self.charge_ICs
                         solve = self.charge(t, current=-c, from_current_state=True, p=x)
-                        error += rmse(solve[1], v)
+                        error += rmse(solve[0][1], v)
             else:
                 solve = self.piecewise_current(self.t_exp, self.currents, p=x)
-                error += rmse(solve[1], self.v_exp)
+                error += rmse(solve[0][1], self.v_exp)
             if verbose:
                 print(error, x0)
         except:
@@ -339,7 +354,7 @@ class BaseBattery:
 
     def generate_data(self, filename, n, currents, loglist='auto', pars=None, bounds=None,
                       type='sobol', distribution='uniform', sample_time=None,
-                      time_samples=100, summary=True, internal=True):
+                      time_samples=100, summary=True, internal=True, just_sample=False, verbose=False):
         """
         This function uses the existing Julia kernel to generate a set of data, similar to how the
         optimization function works. Since this julia kernel already exists, the calculations are note made in parallel.
@@ -400,6 +415,7 @@ class BaseBattery:
         else:
             self.generate_pars = pars
             self.generate_inds = [i for i, x in enumerate(self.available_parameters) if x in self.generate_pars]
+            # self.bounds_inds = [i for i, x in enumerate(self.available_parmeters)]
         assert self.generate_pars is not None
         print(self.generate_inds)
 
@@ -408,7 +424,9 @@ class BaseBattery:
             if self.bounds is None:
                 self.bounds = [(x/1.2, x*1.2) for x in self.initial[self.generate_inds]]
         else:
-            self.bounds = bounds
+            d1 = dict(zip(pars,range(len(pars))))
+            bounds_inds = [d1[i] for i in [self.available_parameters[j] for j in self.generate_inds]]
+            self.bounds = [bounds[i] for i in bounds_inds]
 
         # set up log-spacing
         if loglist is False:
@@ -448,92 +466,95 @@ class BaseBattery:
 
         # map the raw array to bounds, adhering to log scaling rules
         self.scaled_sample = self.log_scale_matrix(self.raw_sample)
+        if just_sample:
+            return [None, self.scaled_sample]
+        else:
 
-        outs = []
-        ins = []
-        self.failed=[]
-        count=0
-        for i in self.currents:
-            for parameter_set in self.scaled_sample:
-                simulate_pars = np.copy(self.initial)
-                simulate_pars[self.generate_inds] = self.log_descale_for_model(parameter_set)
-                # print(simulate_pars)
-                try:
-                    if i > 0:
-                        outs.append(self.discharge(current=i, p=simulate_pars, internal=internal)[1])
-                    else:
-                        outs.append(self.charge(current=-1*i, p=simulate_pars, internal=internal)[1])
-                    ins.append(self.log_descale_for_model(parameter_set))
-                except IndexError:
-                    self.failed.append(simulate_pars)
+            outs = []
+            ins = []
+            self.failed=[]
+            count = 0
+            for i in self.currents:
+                for parameter_set in self.scaled_sample:
+                    simulate_pars = np.copy(self.initial)
+                    simulate_pars[self.generate_inds] = self.log_descale_for_model(parameter_set)
+                    # print(simulate_pars)
+                    try:
+                        if i > 0:
+                            outs.append(self.discharge(current=i, p=simulate_pars, internal=internal)[1])
+                        else:
+                            outs.append(self.charge(current=-1*i, p=simulate_pars, internal=internal)[1])
+                        ins.append(self.log_descale_for_model(parameter_set))
+                    except IndexError:
+                        self.failed.append(simulate_pars)
 
 
-            # outs.append(self.)
-        #     outs.append([])
-        # # outs = np.zeros((self.generate_time.shape[0], time_samples))
-        # # ins = np.zeros(self.generate_time.shape[0], len(self.generate_inds))
-        # # print(self.scaled_sample)
-        # # print(self.generate_time)
-        # count = 0
-        # st = time.time()
-        # self.currents = sorted(self.currents)
-        # self.failed = []
-        # for parameter_set in self.scaled_sample:
-        #     try:
-        #         succ = 0
-        #         # reverse the list because high currents tend to fail more frequently,
-        #         # and we want it to fail first if it's going to fail.
-        #         for i, curr in enumerate(self.currents[::-1]):
-        #
-        #             current_pars = np.copy(self.initial)
-        #             current_pars[self.generate_inds] = self.log_descale_for_model(parameter_set)
-        #             current_pars[self.curr_index] = curr
-        #             # print(current_pars)
-        #             outs[i].append(self.model(current_pars, self.generate_time[i]))
-        #             succ += 1
-        #         ins.append(parameter_set)
-        #     except (ValueError, IndexError):
-        #         # if self.verbose:
-        #             # print('failed - ', current_pars, count)
-        #         self.failed.append([current_pars, count])
-        #         if succ != 0:
-        #             for i in range(succ):
-        #                 outs[i].pop()
-        #     count += 1
-        #     if count == 20:
-        #         print('{} solutions completed of {} in {} seconds - {} total hours predicted'.format(count, self.scaled_sample.shape[0], time.time()-st, (time.time()-st)/3600/(count/self.scaled_sample.shape[0])))
-        #     if count % (self.scaled_sample.shape[0]//20) == 0 and self.verbose:
-        #         print('{} solutions completed of {} in {} seconds - {} total hours predicted'.format(count, self.scaled_sample.shape[0], time.time()-st, (time.time()-st)/3600/(count/self.scaled_sample.shape[0])))
-        #
-        # # save the values to an h5 file
-        # outs = [np.array(out) for out in outs]
-        # ins = np.array(ins)
-        # self.raw_outs = outs
-        #
-        # outs2 = []
-        # for i in range(len(outs[0])):
-        #     outs2.append([x[i] for x in outs])
-        # outs2 = np.array(outs2)
-        # outs = outs2.reshape(outs2.shape[0], -1)
-        #
-        # # break into test and train splits
-        # inds = np.arange(outs.shape[0])
-        # np.random.shuffle(inds)
-        # train = inds[:outs.shape[0]*3//4]
-        # test = inds[outs.shape[0]*3//4:]
-        # #
-        # x = outs[train]
-        # xt = outs[test]
-        # y = ins[train]
-        # yt = ins[test]
-        # self.outs = outs
-        # self.ins = ins
-        # self.create_database(x, y, xt, yt, filename)
-        # if summary:
-        #     print("""A total of {} parameter combinations were evaluated. Of
-        #     these, {} failed, representing {} percent.  These values can be
-        #     found at object.failed""".format(len(self.scaled_sample), len(self.failed), len(self.failed)/len(self.scaled_sample)*100))
-        return [outs, ins]
+                # outs.append(self.)
+            #     outs.append([])
+            # # outs = np.zeros((self.generate_time.shape[0], time_samples))
+            # # ins = np.zeros(self.generate_time.shape[0], len(self.generate_inds))
+            # # print(self.scaled_sample)
+            # # print(self.generate_time)
+            # count = 0
+            # st = time.time()
+            # self.currents = sorted(self.currents)
+            # self.failed = []
+            # for parameter_set in self.scaled_sample:
+            #     try:
+            #         succ = 0
+            #         # reverse the list because high currents tend to fail more frequently,
+            #         # and we want it to fail first if it's going to fail.
+            #         for i, curr in enumerate(self.currents[::-1]):
+            #
+            #             current_pars = np.copy(self.initial)
+            #             current_pars[self.generate_inds] = self.log_descale_for_model(parameter_set)
+            #             current_pars[self.curr_index] = curr
+            #             # print(current_pars)
+            #             outs[i].append(self.model(current_pars, self.generate_time[i]))
+            #             succ += 1
+            #         ins.append(parameter_set)
+            #     except (ValueError, IndexError):
+            #         # if self.verbose:
+            #             # print('failed - ', current_pars, count)
+            #         self.failed.append([current_pars, count])
+            #         if succ != 0:
+            #             for i in range(succ):
+            #                 outs[i].pop()
+            #     count += 1
+            #     if count == 20:
+            #         print('{} solutions completed of {} in {} seconds - {} total hours predicted'.format(count, self.scaled_sample.shape[0], time.time()-st, (time.time()-st)/3600/(count/self.scaled_sample.shape[0])))
+            #     if count % (self.scaled_sample.shape[0]//20) == 0 and self.verbose:
+            #         print('{} solutions completed of {} in {} seconds - {} total hours predicted'.format(count, self.scaled_sample.shape[0], time.time()-st, (time.time()-st)/3600/(count/self.scaled_sample.shape[0])))
+            #
+            # # save the values to an h5 file
+            # outs = [np.array(out) for out in outs]
+            # ins = np.array(ins)
+            # self.raw_outs = outs
+            #
+            # outs2 = []
+            # for i in range(len(outs[0])):
+            #     outs2.append([x[i] for x in outs])
+            # outs2 = np.array(outs2)
+            # outs = outs2.reshape(outs2.shape[0], -1)
+            #
+            # # break into test and train splits
+            # inds = np.arange(outs.shape[0])
+            # np.random.shuffle(inds)
+            # train = inds[:outs.shape[0]*3//4]
+            # test = inds[outs.shape[0]*3//4:]
+            # #
+            # x = outs[train]
+            # xt = outs[test]
+            # y = ins[train]
+            # yt = ins[test]
+            # self.outs = outs
+            # self.ins = ins
+            # self.create_database(x, y, xt, yt, filename)
+            # if summary:
+            #     print("""A total of {} parameter combinations were evaluated. Of
+            #     these, {} failed, representing {} percent.  These values can be
+            #     found at object.failed""".format(len(self.scaled_sample), len(self.failed), len(self.failed)/len(self.scaled_sample)*100))
+            return [outs, ins]
 
     def create_database(self, x, y, xt, yt, filename):
         """This function creates a dataset using pre-split data and saves it
