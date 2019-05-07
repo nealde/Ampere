@@ -49,7 +49,7 @@ double F = 96487.0;
 double R = 8.3143;
 // double TC = 30.0;
 
-double p[5000];
+double p[10000];
 
 int drive(double* input, double* output, int n)
 {
@@ -509,6 +509,9 @@ int drive(double* input, double* output, int n)
     }
 
     if (iout == NOUT)
+    break;
+
+	if (tret >= tfinal)
     break;
     //if (tret == 30000.000000) break;
    }

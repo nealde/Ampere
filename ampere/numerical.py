@@ -131,13 +131,13 @@ def SPM_fd(p, t, initial=None, internal=False):
     from .models.SPM.solve import spm_fd
     # print(p)
     data = spm_fd(p, initial=initial, tf=t[-1], internal=internal)
-
+    # print(data)
 
     if data[0][-1, 0] < t[-1] and np.isclose(data[0][-1, 1], 4.2, rtol=1e-2):
         # print('true')
         pp = np.copy(p)
         pp[17] = 0 # cc is p[17] now
-        data2 = spm_fd(pp, initial=data[1][1:], internal=internal) # leave off time
+        data2 = spm_fd(pp, initial=data[1][1:], tf=t[-1]-data[0][-1,0], internal=internal) # leave off time
         # print(data2)
         data2[0][:,0] += data[0][-1,0]
         data[0] = np.concatenate((data[0][:-1,:], data2[0]), axis=0)
@@ -161,7 +161,7 @@ def SPM_fd(p, t, initial=None, internal=False):
         return [np.concatenate(([t], [voltage(t)], [current(t)]), axis=0), final_values, data[2]]
 
 def P2D_fd(p, t, initial=None, internal=False):
-    '''This function wraps the SPM exe which allows for continuous battery operation.
+    '''This function wraps the P2D exe which allows for continuous battery operation.
     It handles switching between CC/CV if needed. This is determined by the time steps
     and the current.
     For the parameters passed to the exe, p[:14] are model parameters, p[14] is current,

@@ -44,9 +44,12 @@ def spm_fd(p, initial=None, tf=0, internal=False):
     else:
         input1 = np.concatenate([p,[0],[tf], initial])
     # print(list(input1))
+    # print(input1[23], input1[19])
     var = np.zeros((10000,int(p[14]+p[15]+9)))
     model(input1, var)
+    # print(var[:,-2])
     count = np.nonzero(var[:,-2])[0][-1]+1
+    # print(count)
     var = var[:count]
     final = var[-1]
     # need to select: time, voltage, current

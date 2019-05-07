@@ -164,7 +164,7 @@ int drive(double* input, double* output, int n)
  // tfinal is now
   double tfinal = dt*NOUT;
   if (p[19] > 0){
-      tfinal = p[23]+200.0;
+      tfinal = p[19]+200.0;
   }
     cc = p[17];
     int initial = (int) p[18];
