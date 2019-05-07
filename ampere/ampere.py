@@ -201,17 +201,30 @@ class BaseBattery:
         assert len(times) == len(currents), 'times and currents must be the same length'
 
         solve = []
+        curr = []
         count = 0
         if not from_current_state:
             self.current_state = self.discharge_ICs
         for t, c in zip(times, currents):
             tt = np.linspace(0, t, n_steps)
+            if len(solve)>1:
+                if solve[-1][-1,-2] <= 2.5 and c > 0:
+                    print(solve[-1][-1,-2])
+                    break
+            # else:
+            curr.append(c)
+            # if solve[-1]
+            # try:
+                # print(solve[-1], t, c)
+            # except:
+            #     pass
             if c > 0:
                 try:
                     out = self.discharge(tt, current=c, from_current_state=True, p=p, internal=internal)
                     # print(len(out))
                 except IndexError:
-                    out = [tt, np.ones(len(tt))*2.5, np.ones(len(tt))*c]
+                    pass
+                    # out = [tt, np.ones(len(tt))*2.5, np.ones(len(tt))*c]
             else:
                 try:
                     if internal:
@@ -219,7 +232,8 @@ class BaseBattery:
                     else:  # need to nest one layer deeper for downstream code
                         out = [self.charge(tt, current=c*-1, from_current_state=True, p=p, internal=internal)]
                 except IndexError:
-                    out = np.array([tt, np.ones(len(tt))*4.2, np.ones(len(tt))*c])
+                    pass
+                    # out = np.array([tt, np.ones(len(tt))*4.2, np.ones(len(tt))*c])
             # print(out)
             # add times together
             # if count > 0:
@@ -233,13 +247,16 @@ class BaseBattery:
                     out[0][0] += solve[-1][0, -1]
                 solve.append(out[0])
             count += 1
+
         # print(solve)
         if internal:
+            # print([s.shape for s in solve])
+            # print(solve[-1].shape)
             solve = np.concatenate(solve, axis=0)
         else:
             solve = np.concatenate(solve, axis=1)
         self.hist.append(solve)
-        return solve
+        return solve, curr
 
 
 
