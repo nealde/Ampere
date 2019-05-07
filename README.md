@@ -20,7 +20,7 @@ Using a [scikit-learn-like API](https://arxiv.org/abs/1309.0238), we hope to mak
 If you have a feature request or find a bug, please feel free to [file an issue](https://github.com/nealde/Ampere/issues) or, better yet, make the code improvements and [submit a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)! The goal is to build an open-source tool that the entire electrochemical community can improve and use!
 
 Ampere currently provides:
-- a simple API for fitting, predicting, and plotting discharge curves
+- A simple API for fitting, predicting, and plotting discharge curves
 - A simple API for generating data, or fitting with arbitrary charge / discharge patterns.
 
 
@@ -46,4 +46,11 @@ The easiest way to install Ampere is using pip:
 
 #### Examples and Documentation
 
-Several examples can be found in the `examples/` directory (the [fitting_tutorial.ipynb](https://github.com/ECSHackWeek/impedance.py/blob/master/examples/fitting_tutorial.ipynb) is a great place to start) and the documentation can be found at [impedancepy.readthedocs.io](https://impedancepy.readthedocs.io/en/latest/).
+Examples and documentation will be provided after my Defense, which is set for the end of May.
+
+#### On the Horizon
+
+- Currently, all models are solved with Finite Difference discretization.  I would love to use some higher order spatial discretizations.
+- Currently, the results have not been verified with external models. That is still on the to-do list, and to incorporate those values into the test suite would be excellent.
+- Some of my published work regarding surrogate models for solving and fitting will be implemented once they are fully fleshed out.
+
