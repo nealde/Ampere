@@ -55,9 +55,12 @@ I've recently added the Cython-generated c files back to the repo, so it may be 
 
 However, if that doesn't work, the following will rebuild the files:
 
-`cd ampere/ampere/models/P2D`
+`cd ampere/models/P2D`
+
 `python setup.py build_ext --inplace`
+
 `cd ../SPM`
+
 `python setup.py build_ext --inplace`
 
 This will build the local C code that is needed by the main compiler.  Then, you can cd back up to the main folder and
