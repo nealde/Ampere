@@ -3,10 +3,10 @@
 test_nb.*
 
 # any cython files or binaries
-.c
+#.c
 
 # files made by building
-*.o 
+*.o
 *.obj
 *.pyc
 *.pyd

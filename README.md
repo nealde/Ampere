@@ -44,6 +44,28 @@ The easiest way to install Ampere is using pip:
 
 `pip install ampere`
 
+However, that may or may not work, depending upon your system. An alternative method of installation that works is:
+
+`git clone https://github.com/nealde/ampere`
+
+I've recently added the Cython-generated c files back to the repo, so it may be as simple as:
+
+`python setup.py install`
+
+However, if that doesn't work, the following will rebuild the files:
+
+`cd ampere/ampere/models/P2D`
+`python setup.py build_ext --inplace`
+`cd ../SPM`
+`python setup.py build_ext --inplace`
+
+This will build the local C code that is needed by the main compiler.  Then, you can cd back up to the main folder and
+
+`python setup.py install`
+
+That will typically work.  I'm still working on getting pip installation working, and it will likely require some package modifications,
+following SKLearn as a guide.  Hopefully, I will find time in the next couple of weeks.
+
 #### Examples and Documentation
 
 Examples and documentation will be provided after my Defense, which is set for the end of May.
@@ -53,4 +75,3 @@ Examples and documentation will be provided after my Defense, which is set for t
 - Currently, all models are solved with Finite Difference discretization.  I would love to use some higher order spatial discretizations.
 - Currently, the results have not been verified with external models. That is still on the to-do list, and to incorporate those values into the test suite would be excellent.
 - Some of my published work regarding surrogate models for solving and fitting will be implemented once they are fully fleshed out.
-

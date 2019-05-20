@@ -208,7 +208,7 @@ class BaseBattery:
         for t, c in zip(times, currents):
             tt = np.linspace(0, t, n_steps)
             if len(solve)>1:
-                if solve[-1][-1,-2] <= 2.5 and c > 0:
+                if solve[-1][-1,-2] <= 2.5:
                     print(solve[-1][-1,-2])
                     break
             # else:
