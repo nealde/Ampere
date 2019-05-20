@@ -50,6 +50,7 @@ However, that may or may not work, depending upon your system. An alternative me
 
 I've recently added the Cython-generated c files back to the repo, so it may be as simple as:
 
+`cd ampere`
 `python setup.py install`
 
 However, if that doesn't work, the following will rebuild the files:
