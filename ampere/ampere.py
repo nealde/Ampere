@@ -206,11 +206,12 @@ class BaseBattery:
         if not from_current_state:
             self.current_state = self.discharge_ICs
         for t, c in zip(times, currents):
+            # print(t,c)
             tt = np.linspace(0, t, n_steps)
-            if len(solve)>1:
-                if solve[-1][-1,-2] <= 2.5:
-                    print(solve[-1][-1,-2])
-                    break
+            # if len(solve)>1:
+            #     if solve[-1][-1,-2] <= 2.5:
+            #         print(solve[-1][-1,-2])
+            #         break
             # else:
             curr.append(c)
             # if solve[-1]
@@ -220,18 +221,24 @@ class BaseBattery:
             #     pass
             if c > 0:
                 try:
+                    # if internal:
                     out = self.discharge(tt, current=c, from_current_state=True, p=p, internal=internal)
+                    # else:  # need to nest one layer deeper for downstream code
+                    #     out = self.discharge(tt, current=c, from_current_state=True, p=p, internal=internal)
+                    # out = self.discharge(tt, current=c, from_current_state=True, p=p, internal=internal)
                     # print(len(out))
                 except IndexError:
+                    print('failed')
                     pass
                     # out = [tt, np.ones(len(tt))*2.5, np.ones(len(tt))*c]
             else:
                 try:
-                    if internal:
-                        out = self.charge(tt, current=c*-1, from_current_state=True, p=p, internal=internal)
-                    else:  # need to nest one layer deeper for downstream code
-                        out = [self.charge(tt, current=c*-1, from_current_state=True, p=p, internal=internal)]
+                    # if internal:
+                    #     out = self.charge(tt, current=c*-1, from_current_state=True, p=p, internal=internal)
+                    # else:  # need to nest one layer deeper for downstream code
+                    out = [self.charge(tt, current=c*-1, from_current_state=True, p=p, internal=internal)]
                 except IndexError:
+                    print('failed')
                     pass
                     # out = np.array([tt, np.ones(len(tt))*4.2, np.ones(len(tt))*c])
             # print(out)
@@ -243,8 +250,12 @@ class BaseBattery:
                 solve.append(out[-1])
             else:
                 # add times together
+                # print(len(solve))
+                # print(solve,out[0][0], out[0])
                 if count > 0:
-                    out[0][0] += solve[-1][0, -1]
+                    # print(solve[-1][0][-1])
+                    # print(out[0][0])
+                    out[0][0] += solve[-1][0][-1]
                 solve.append(out[0])
             count += 1
 
@@ -254,6 +265,9 @@ class BaseBattery:
             # print(solve[-1].shape)
             solve = np.concatenate(solve, axis=0)
         else:
+            # print('concatenating')
+            # print(solve)
+            # print([x.shape] for x in solve)
             solve = np.concatenate(solve, axis=1)
         self.hist.append(solve)
         return solve, curr
@@ -295,11 +309,15 @@ class BaseBattery:
                         error += rmse(solve[0][1], v)
                     else:
                         self.current_state = self.charge_ICs
+                        # print(t)
                         solve = self.charge(t, current=-c, from_current_state=True, p=x)
-                        error += rmse(solve[0][1], v)
+                        # print(solve)
+                        # print(len(solve[0][1]))
+                        # print(solve[0])
+                        error += rmse(solve[1], v)
             else:
                 solve = self.piecewise_current(self.t_exp, self.currents, p=x)
-                error += rmse(solve[0][1], self.v_exp)
+                error += rmse(solve[0][:,1], self.v_exp)
             if verbose:
                 print(error, x0)
         except:

@@ -148,19 +148,19 @@ def SPM_fd(p, t, initial=None, internal=False):
 
     # returns a list with [][array_of_data] and [final values]]
     # print(data)
-    # if p[16] > 0: # if current is positive - current is now index 16
-        # voltage = interp1d(data[0][:,0], data[0][:,1], kind='cubic', bounds_error=False, fill_value=4.2)
-        # current = interp1d(data[0][:,0], data[0][:,2], kind='cubic', bounds_error=False, fill_value=0)
-    # else:
-        # voltage = interp1d(data[0][:,0], data[0][:,1], kind='cubic', bounds_error=False, fill_value=2.5)
-        # current = interp1d(data[0][:,0], data[0][:,2], kind='cubic', bounds_error=False, fill_value=0)
+    if p[16] > 0: # if current is positive - current is now index 16
+        voltage = interp1d(data[0][:,0], data[0][:,1], kind='cubic', bounds_error=False, fill_value=4.2)
+        current = interp1d(data[0][:,0], data[0][:,2], kind='cubic', bounds_error=False, fill_value=0)
+    else:
+        voltage = interp1d(data[0][:,0], data[0][:,1], kind='cubic', bounds_error=False, fill_value=2.5)
+        current = interp1d(data[0][:,0], data[0][:,2], kind='cubic', bounds_error=False, fill_value=0)
     final_values = data[1]
     if not internal:
-        return [data[0][:,[0,1,2]], final_values]
-        # return [np.concatenate(([t], [voltage(t)], [current(t)]), axis=0), final_values]
+        # return [data[0][:,[0,1,2]], final_values]
+        return [np.concatenate(([t], [voltage(t)], [current(t)]), axis=0), final_values]
     else:
-        return [data[0][:,[0,1,2]], final_values, data[2]]
-        # return [np.concatenate(([t], [voltage(t)], [current(t)]), axis=0), final_values, data[2]]
+        # return [data[0][:,[0,1,2]], final_values, data[2]]
+        return [np.concatenate(([t], [voltage(t)], [current(t)]), axis=0), final_values, data[2]]
 
 def P2D_fd(p, t, initial=None, internal=False):
     '''This function wraps the P2D exe which allows for continuous battery operation.
