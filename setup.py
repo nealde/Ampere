@@ -27,7 +27,7 @@ ext_modules = [ ]
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
-ida_dir = "ida"
+ida_dir = "ampere/models/ida"
 ida_requirements1 = [ida_dir+"/ida.c",ida_dir+"/ida_band.c",ida_dir+"/ida_dense.c",ida_dir+"/ida_direct.c",ida_dir+"/ida_ic.c",ida_dir+"/ida_io.c",
 			ida_dir+"/nvector_serial.c",ida_dir+"/sundials_band.c",ida_dir+"/sundials_dense.c",ida_dir+"/sundials_direct.c",ida_dir+"/sundials_math.c",ida_dir+"/sundials_nvector.c"]
 # ida_requirements2 = [ida_dir+"ida.h",ida_dir+"ida_band.h",ida_dir+"ida_dense.h",ida_dir+"/ida_direct.h",ida_dir+"/ida_ic.h",ida_dir+"/ida_io.h",ida_dir+"/sundials_types.h", ida_dir+"/ida_impl.h",

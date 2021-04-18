@@ -1,61 +1,64 @@
 import numpy as np
-import os
+from typing import Tuple, List
+from .SPM_par import model as SPM_par
+from .SPM_fd_sei import model as SPM_fd_sei
+from .SPM_fd import model as SPM_fd
 
-def spm_par(p, initial=None, tf=0):
-    from .SPM_par import model
-    if initial is None:
-        input1 = np.concatenate([p,[1],[tf]])
-    else:
-        input1 = np.concatenate([p,[0],[tf], initial])
-    var = np.zeros((10000,8))
-    model(input1, var)
-    count = np.nonzero(var[:,1])[0][-1]+1
-    var = var[:count]
-    final = var[-1]
-    out = var[:,[0,5,7]]
-    out[:,1] -= var[:,6]
+
+def spm_parabolic(p: np.ndarray, initial_state=(), tf=0, internal: bool = False) -> Tuple[np.ndarray, np.ndarray]:
+    # initial_state is ignored if it is not defined
+    model_inputs = np.concatenate([p, [0], [tf], initial_state])
+    result_dimensionality = len(initial_state) + 1
+    print(len(initial_state), result_dimensionality)
+    expected_max_result_length = 10000
+
+    # pre-allocate the array for the C library to fill
+    model_results = np.zeros((expected_max_result_length, result_dimensionality))
+    SPM_par(model_inputs, model_results)
+
+    # throw out the extra values
+    count = np.nonzero(model_results[:, 1])[0][-1] + 1
+    model_results = model_results[:count]
+    final = model_results[-1]
+    out = model_results[:, [0, 5, 7]]
+    out[:, 1] -= model_results[:, 6]
     return [out, final]
 
-def spm_fd_sei(p, initial=None, tf=0, internal=False):
-    from .SPM_fd_sei import model
-    if initial is None:
-        input1 = np.concatenate([p,[1],[tf]])
-    else:
-        input1 = np.concatenate([p,[0],[tf], initial])
-    # print(list(input1))
-    var = np.zeros((10000,int(p[18]+p[19]+15)))
-    model(input1, var)
-    count = np.nonzero(var[:,-2])[0][-1]+1
+
+def spm_fd_sei(p, initial_state=None, tf=0, internal=False):
+
+    model_inputs = np.concatenate([p, [0], [tf], initial_state])
+    result_dimensionality = len(initial_state) + 1
+    # print(len(initial_state), result_dimensionality)
+    var = np.zeros((10000, result_dimensionality))
+    SPM_fd_sei(model_inputs, var)
+    count = np.nonzero(var[:, -2])[0][-1] + 1
     var = var[:count]
     final = var[-1]
     # need to select: time, voltage, current
-    out = var[:,[0,-2,-1]]
-    out[:,-1] /= 30.
+    out = var[:, [0, -2, -1]]
+    out[:, -1] /= 30.0
     # out[:,1] -= var[:,6]
     if not internal:
         return [out, final]
     else:
         return [out, final, var]
 
-def spm_fd(p, initial=None, tf=0, internal=False):
-    from .SPM_fd import model
-    if initial is None:
-        input1 = np.concatenate([p,[1],[tf]])
-    else:
-        input1 = np.concatenate([p,[0],[tf], initial])
-    # print(list(input1))
-    # print(input1[23], input1[19])
-    var = np.zeros((10000,int(p[14]+p[15]+9)))
-    model(input1, var)
-    # print(var[:,-2])
-    count = np.nonzero(var[:,-2])[0][-1]+1
-    # print(count)
+
+def spm_fd(p, initial_state=None, tf=0, internal=False):
+    model_inputs = np.concatenate([p, [0], [tf], initial_state])
+    result_dimensionality = int(p[14] + p[15] + 9)
+    print(len(initial_state), result_dimensionality)
+    var = np.zeros((10000, result_dimensionality))
+    # var = np.zeros((10000, ))
+    SPM_fd(model_inputs, var)
+    count = np.nonzero(var[:, -2])[0][-1] + 1
     var = var[:count]
     final = var[-1]
     # need to select: time, voltage, current
-    out = var[:,[0,-2,-1]]
-    out[:,-1] /= 30.
-    # out[:,1] -= var[:,6]
+    out = var[:, [0, -2, -1]]
+    out[:, -1] /= 30.0
+
     if not internal:
         return [out, final]
     else:

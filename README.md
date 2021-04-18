@@ -79,3 +79,6 @@ Examples and documentation will be provided after my Defense, which is set for t
 - Currently, all models are solved with Finite Difference discretization.  I would love to use some higher order spatial discretizations.
 - Currently, the results have not been verified with external models. That is still on the to-do list, and to incorporate those values into the test suite would be excellent.
 - Some of my published work regarding surrogate models for solving and fitting will be implemented once they are fully fleshed out.
+
+- Add ability to serialize / desearialize models from disk, to save the result of an optimization
+- add ability to have custom Up / Un functions for different battery chemistries

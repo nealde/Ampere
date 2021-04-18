@@ -28,6 +28,7 @@ class BaseBattery:
         self.initial = None
         self.conf_ = None
         self.inplace = None
+        self.hist = []
 
         # self.opt = opt_wrap
 
@@ -111,7 +112,7 @@ class BaseBattery:
         ------              ------------------------
         out                 A list of values for [time, voltage, current] of the simulation"""
         if t is None:
-            t = np.linspace(0,4000*(1/current),500)
+            t = np.linspace(0, 4000*(1/current), 500)
         if p is None:
             if self.initial_fit == 0:
                 p = self.initial
@@ -819,41 +820,37 @@ class SingleParticleFDSEI(BaseBattery):
             self.estimate_inds = list(range(len(self.initial)))
             if self.verbose:
                 print(self.estimate_parameters, self.estimate_inds)
-        self.charge_ICs = []
-        N1 = int(self.initial[18])
-        N2 = int(self.initial[19])
-        for i in range(N1+2):
-            self.charge_ICs.append(49503.111)
-        for i in range(N1+2, N1+N2+4):
-            self.charge_ICs.append(305.55)
-        self.charge_ICs.append(3.67873289259766)    #phi_p
-        self.charge_ICs.append(.182763748093840)    #phi_n
-        self.charge_ICs.append(30)                  #iint
-        self.charge_ICs.append(0)                   #isei
-        self.charge_ICs.append(1e-10)               #delta_sei
-        self.charge_ICs.append(0)                  #Q
-        self.charge_ICs.append(0)                  #cm
-        self.charge_ICs.append(0)                  #cf
-        self.charge_ICs.append(3.0596914450382)   #pot
-        self.charge_ICs.append(TC*1)   	  	  #it
-        # self.charge_ICs = [4.95030611e+04, 3.05605527e+02, 4.93273985e+04, 3.55685791e+02, 3.78436346e+00, 7.86330739e-01, 1.00000000e+00]
-        self.discharge_ICs=[]
-        for i in range(N1+2):
-            self.discharge_ICs.append(2.51417672e+04)
-        for i in range(N1+2, N1+N2+4):
-            self.discharge_ICs.append(2.73921225e+04)
-        self.discharge_ICs.append(4.26700382e+00)
-        self.discharge_ICs.append(6.70038247e-02)
-        self.discharge_ICs.append(2.65295200e-03)
-        self.discharge_ICs.append(7.34704800e-03)
-        self.discharge_ICs.append(1.63513920e-10)
-        self.discharge_ICs.append(3.08271510e+01)
-        self.discharge_ICs.append(3.08183958e+01)
-        self.discharge_ICs.append(8.75512593e-03)
-        self.discharge_ICs.append(4.20000000e+00)
-        self.discharge_ICs.append(1.00000000e-02)
-        # self.discharge_ICs = [2.51584754e+04, 2.73734963e+04, 2.51409091e+04, 2.73785043e+04, 4.26705391e+00, 6.70539113e-02, -1.00000000]
-        self.hist = []
+
+        N1 = self.initial_parameters['N1']
+        N2 = self.initial_parameters['N2']
+        # set initial lithium concentrations
+        self.charge_ICs = [49503.111 for n in range(N1 + 2)] + [305.55 for n in range(N2 + 2)]
+        self.charge_ICs += [
+            3.67873289259766,  # phi_p
+            .182763748093840,  # phi_n
+            30,  # iint
+            0,  # isei
+            1e-10,  # delta_sei
+            0,  # Q
+            0,  # cm
+            0,  # cf
+            3.0596914450382,  # pot
+            TC * 1  # it
+        ]
+
+        self.discharge_ICs = [2.51417672e+04 for n in range(N1 + 2)] + [2.73921225e+04 for n in range(N2 + 2)]
+        self.discharge_ICs += [
+            4.26700382e+00,  # phi_p
+            6.70038247e-02,  # phi_n
+            2.65295200e-03,  # iint,
+            7.34704800e-03,  # isei
+            1e-10,  # delta_sei
+            3.08271510e+01,  # Q
+            3.08183958e+01,  # cm
+            8.75512593e-03,  # cf
+            4.20000000e+00,  # pot
+            TC * 1  # it
+        ]
 
 
 class SingleParticleFD(BaseBattery):
@@ -931,28 +928,27 @@ class SingleParticleFD(BaseBattery):
             if self.verbose:
                 print(self.estimate_parameters, self.estimate_inds)
         self.charge_ICs = []
-        N1 = int(self.initial[14])
-        N2 = int(self.initial[15])
-        for i in range(N1+2):
-            self.charge_ICs.append(49503.111)
-        for i in range(N1+2, N1+N2+4):
-            self.charge_ICs.append(305.55)
-        self.charge_ICs.append(3.67873289259766)    #phi_p
-        self.charge_ICs.append(.182763748093840)    #phi_n
-        self.charge_ICs.append(3.0596914450382)   #pot
-        self.charge_ICs.append(TC*1)   	  	  #it
-        # self.charge_ICs = [4.95030611e+04, 3.05605527e+02, 4.93273985e+04, 3.55685791e+02, 3.78436346e+00, 7.86330739e-01, 1.00000000e+00]
-        self.discharge_ICs=[]
-        for i in range(N1+2):
-            self.discharge_ICs.append(25817.37)
-        for i in range(N1+2, N1+N2+4):
-            self.discharge_ICs.append(26885.03)
-        self.discharge_ICs.append(4.246347)
-        self.discharge_ICs.append(0.046347)
-        self.discharge_ICs.append(4.20000000e+00)
-        self.discharge_ICs.append(1.00000000e-02)
-        # self.discharge_ICs = [2.51584754e+04, 2.73734963e+04, 2.51409091e+04, 2.73785043e+04, 4.26705391e+00, 6.70539113e-02, -1.00000000]
-        self.hist = []
+
+        N1 = self.initial_parameters['N1']
+        N2 = self.initial_parameters['N2']
+
+        # set initial lithium concentrations
+        self.charge_ICs = [49503.111 for n in range(N1 + 2)] + [305.55 for n in range(N2 + 2)]
+        self.charge_ICs += [
+            3.67873289259766,  # phi_p
+            .182763748093840,  # phi_n
+            3.0596914450382,  # pot
+            TC * 1,  # it
+        ]
+
+        self.discharge_ICs = [25817.37 for n in range(N1 + 2)] + [26885.03 for n in range(N2 + 2)]
+        self.discharge_ICs += [
+            4.246347,  # phi_p
+            0.046347,  # phi_n
+            4.20000000e+00,  # pot
+            TC * 1,  # it
+        ]
+
 
 class PseudoTwoDimFD(BaseBattery):
     """An Finite Difference implementation of the Single Particle Model with SEI, solved with IDA.  This
@@ -1030,55 +1026,40 @@ class PseudoTwoDimFD(BaseBattery):
             if self.verbose:
                 print(self.estimate_parameters, self.estimate_inds)
 
+        n_positive_region = int(self.initial[25])
+        n_separator_region = int(self.initial[26])
+        n_negative_region = int(self.initial[27])
+        nr_positive = int(self.initial[28])
+        nr_negative = int(self.initial[29])
 
-        N1 = int(self.initial[25])
-        N2 = int(self.initial[26])
-        N3 = int(self.initial[27])
-        Nr1 = int(self.initial[28])
-        Nr2 = int(self.initial[29])
+        # the order of the initial conditions is coupled to the order of the equations in the model file.
+        # while the order is arbitrary, they are arranged to be human-readable and to enable looping,
+        # so there is a physical structure to portions of the list.
 
-
-        self.charge_ICs = []
-        for i in range(N1+N2+N3+4):
-            self.charge_ICs.append(1.0)
-        for i in range(N1+N2+N3+3):
-            self.charge_ICs.append(-.787E-2+.03E-2*i)
-        self.charge_ICs.append(0.0)
-        for i in range(N1+2):
-            self.charge_ICs.append(2.899)
-        for i in range(N3+2):
-            self.charge_ICs.append(0.09902)
-        for i in range(N3*(Nr2+1)):
-            self.charge_ICs.append(0.22800075826244027)
-        for i in range(N3):
-            self.charge_ICs.append(0.21325933957011173)
-        for i in range(N1*(Nr1+1)):
-            self.charge_ICs.append(0.9532086891149233)
-        for i in range(N1):
-            self.charge_ICs.append(0.9780166774057617)
-        self.charge_ICs.append(2.8)
-        self.charge_ICs.append(-17.1)
+        # initialize lithium concentration across the electrode
+        self.charge_ICs = [1.0 for i in range(n_positive_region+n_separator_region+n_negative_region+4)]
+        self.charge_ICs += [-.787E-2+.03E-2*i for i in range(n_positive_region+n_separator_region+n_negative_region+3)]
+        self.charge_ICs += [0.0]
+        self.charge_ICs += [2.899 for i in range(n_positive_region + 2)]
+        self.charge_ICs += [0.09902 for i in range(n_positive_region + 2)]
+        self.charge_ICs += [0.22800075826244027 for i in range(n_negative_region*(nr_negative+1))]
+        self.charge_ICs += [0.21325933957011173 for i in range(n_negative_region)]
+        self.charge_ICs += [0.9532086891149233 for i in range(n_positive_region*(nr_positive+1))]
+        self.charge_ICs += [0.9780166774057617 for i in range(n_positive_region)]
+        self.charge_ICs.append(2.8)  # potential
+        self.charge_ICs.append(-17.1)  # initial discharge current
 
         # initialize the discharge ICs
-        self.discharge_ICs = []
-        for i in range(N1+N2+N3+4):
-            self.discharge_ICs.append(0.99998+2e-6*i)
-        for i in range(N1+N2+N3+3):
-            self.discharge_ICs.append(-.3447E-2+.01E-2*i)
-        self.discharge_ICs.append(0.0)
-        for i in range(N1+2):
-            self.discharge_ICs.append(0.422461225901562E1)
-        for i in range(N3+2):
-            self.discharge_ICs.append(0.822991162960124E-1)
-        for i in range(N3*(Nr2+1)):
-            self.discharge_ICs.append(0.986699999999968)
-        for i in range(N3):
-            self.discharge_ICs.append(0.977101677061948)
-        for i in range(N1*(Nr1+1)):
-            self.discharge_ICs.append(0.424)
-        for i in range(N1):
-            self.discharge_ICs.append(0.431)
-        self.discharge_ICs.append(4.2)
-        self.discharge_ICs.append(-17.1)
+        self.discharge_ICs = [0.99998+2e-6*i for i in range(n_positive_region+n_separator_region+n_negative_region+4)]
+        self.discharge_ICs += [-.3447E-2+.01E-2*i for i in range(n_positive_region+n_separator_region+n_negative_region+3)]
+        self.discharge_ICs += [0.0]
+        self.discharge_ICs += [0.422461225901562E1 for i in range(n_positive_region+2)]
+        self.discharge_ICs += [0.822991162960124E-1 for i in range(n_negative_region+2)]
+        self.discharge_ICs += [0.986699999999968 for i in range(n_negative_region*(nr_negative+1))]
+        self.discharge_ICs += [0.977101677061948 for i in range(n_negative_region)]
+        self.discharge_ICs += [0.424 for i in range(n_positive_region*(nr_positive+1))]
+        self.discharge_ICs += [0.431 for i in range(n_positive_region)]
+        self.discharge_ICs.append(4.2)  # potential
+        self.discharge_ICs.append(-17.1)  # initial current
 
         self.hist = []

@@ -45,7 +45,7 @@ package_directory = os.path.dirname(os.path.abspath(__file__))
 #     final_values = data[1]
 #     return [voltage(t), current(t), final_values]
 
-def SPM_par(p, t, initial=None):
+def SPM_par(p, t, initial=None, internal=False):
     '''This function wraps the SPM exe which allows for continuous battery operation.
     It handles switching between CC/CV if needed. This is determined by the time steps
     and the current.
@@ -53,8 +53,8 @@ def SPM_par(p, t, initial=None):
     and p[15] is whether to be in CC or CV mode.
     p[16] is whether or not the model will inherit initial conditions, and the next 7 expected
     parameters are the initial conditions, if initial = 0.'''
-    from .models.SPM.solve import spm_par
-    data = spm_par(p, initial=initial, tf=t[-1])
+    from .models.SPM.solve import spm_parabolic
+    data = spm_parabolic(p, initial_state=initial, tf=t[-1], internal=internal)
     # print(data[0][-5:])
     # print(data)
     # print(data[1][5]-data[1][6])
@@ -62,7 +62,7 @@ def SPM_par(p, t, initial=None):
         # print('true')
         pp = np.copy(p)
         pp[15] = 0
-        data2 = spm_par(pp, initial=data[1][1:]) # leave off time
+        data2 = spm_parabolic(pp, initial_state=data[1][1:]) # leave off time
         # print(data2)
         data2[0][:,0] += data[0][-1,0]
         data[0] = np.concatenate((data[0][:-1,:], data2[0]), axis=0)
@@ -90,13 +90,13 @@ def SPM_fd_sei(p, t, initial=None, internal=False):
     parameters are the initial conditions, if initial = 0.'''
     from .models.SPM.solve import spm_fd_sei
     # print(p)
-    data = spm_fd_sei(p, initial=initial, tf=t[-1])
+    data = spm_fd_sei(p, initial_state=initial, tf=t[-1])
 
     if data[0][-1, 0] < t[-1] and np.isclose(data[0][-1, 1], 4.2, rtol=1e-2):
         # print('true')
         pp = np.copy(p)
         pp[21] = 0 # cc is p[23] now
-        data2 = spm_fd_sei(pp, initial=data[1][1:]) # leave off time
+        data2 = spm_fd_sei(pp, initial_state=data[1][1:]) # leave off time
         # print(data2)
         data2[0][:,0] += data[0][-1,0]
         data[0] = np.concatenate((data[0][:-1,:], data2[0]), axis=0)
@@ -130,14 +130,14 @@ def SPM_fd(p, t, initial=None, internal=False):
     parameters are the initial conditions, if initial = 0.'''
     from .models.SPM.solve import spm_fd
     # print(p)
-    data = spm_fd(p, initial=initial, tf=t[-1], internal=internal)
+    data = spm_fd(p, initial_state=initial, tf=t[-1], internal=internal)
     # print(data)
 
     if data[0][-1, 0] < t[-1] and np.isclose(data[0][-1, 1], 4.2, rtol=1e-2):
         # print('true')
         pp = np.copy(p)
         pp[17] = 0 # cc is p[17] now
-        data2 = spm_fd(pp, initial=data[1][1:], tf=t[-1]-data[0][-1,0], internal=internal) # leave off time
+        data2 = spm_fd(pp, initial_state=data[1][1:], tf=t[-1] - data[0][-1, 0], internal=internal) # leave off time
         # print(data2)
         data2[0][:,0] += data[0][-1,0]
         data[0] = np.concatenate((data[0][:-1,:], data2[0]), axis=0)

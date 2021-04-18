@@ -8,11 +8,11 @@
 // #include "ida/nvector_serial.h"
 // #include "ida/sundials_math.h"
 // #include "ida/sundials_types.h"
-#include "../../../ida/ida.h"
-#include "../../../ida/ida_dense.h"
-#include "../../../ida/nvector_serial.h"
-#include "../../../ida/sundials_math.h"
-#include "../../../ida/sundials_types.h"
+#include "../ida/ida.h"
+#include "../ida/ida_dense.h"
+#include "../ida/nvector_serial.h"
+#include "../ida/sundials_math.h"
+#include "../ida/sundials_types.h"
 
 // Problem Constants
 // #define NEQ   190
